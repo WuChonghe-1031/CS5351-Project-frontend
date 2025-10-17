@@ -1,0 +1,108 @@
+.container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 2rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Tab样式 */
+.tabs {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tab {
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab.active {
+  color: #1890ff;
+  border-bottom-color: #1890ff;
+}
+
+.tab:hover:not(.active) {
+  color: #333;
+  border-bottom-color: #ddd;
+}
+
+/* 表单样式 */
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+}
+
+.error {
+  color: #ff4d4f;
+  font-size: 0.875rem;
+  margin-top: 0.3rem;
+  min-height: 1.2rem;
+}
+
+/* 按钮样式 */
+.button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #096dd9;
+}
+
+.button:disabled {
+  background-color: #8cc5ff;
+  cursor: not-allowed;
+}
+
+/* 切换动画 */
+.formContainer {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.formContainer.hidden {
+  display: none;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.formContainer.visible {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
