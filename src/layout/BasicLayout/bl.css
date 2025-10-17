@@ -67,7 +67,7 @@
 
 /* 主内容区样式 */
 .basic-layout-content {
-  /* flex: 1; 占满剩余宽度 */
+  flex: 1; 
   padding: 20px;
   overflow-y: auto; 
 }

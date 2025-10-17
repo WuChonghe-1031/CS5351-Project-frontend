@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Routes, Route } from 'react-router-dom'; // 导入路由出口组件
+import { routes, notFoundRoute } from '../../routers'; // 导入路由配置
 import './bl.css'; // 引入样式
 
 // 子组件：头部
@@ -52,7 +54,18 @@ const BasicLayout = ({ children }) => {
       <div className="basic-layout-body">
         {/* 主内容区 */}
         <main className="basic-layout-content">
-          {children} {/* 页面具体内容通过children传入 */}
+          <Routes>
+            {/* 渲染所有正常路由 */}
+            {routes.map((route) => (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element} // 渲染对应的页面组件
+              />
+            ))}
+            {/* 渲染404页面 */}
+            <Route path={notFoundRoute.path} element={notFoundRoute.element} />
+          </Routes>
         </main>
       </div>
 
