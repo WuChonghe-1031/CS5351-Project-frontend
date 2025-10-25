@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { List, Avatar, Typography, Tag, Tooltip, Space, message } from "antd";
-import { ClockCircleOutlined, BranchesOutlined, UserOutlined } from "@ant-design/icons";
+import { Avatar, Button, List, Space, Tag, Tooltip, Typography, message} from "antd";
+import { BranchesOutlined, ClockCircleOutlined, UserOutlined } from "@ant-design/icons";
 import { getCommitDetails } from '../../api/api';
 import DiffComponent from './diffComponent';
 
 const { Text } = Typography;
 
-const CommitList = ({ repoName, commits }) => {
+const CommitList = ({ repoName, commits, onDetail }) => {
   const [isShowDiff, setIsShowDiff] = useState(false);
   const [diffText, setDiffText] = useState('');
 
@@ -14,7 +14,7 @@ const CommitList = ({ repoName, commits }) => {
     try {
       await navigator.clipboard.writeText(sha);
       message.success("SHA copied to clipboard!");
-    } catch (err) {
+    } catch {
       message.error("Failed to copy SHA");
     }
   };
@@ -22,13 +22,22 @@ const CommitList = ({ repoName, commits }) => {
     getCommitDetails(repoName, sha).then((res) => {
       setDiffText(res);
       setIsShowDiff(true);
+      onDetail(true);
     });
   };
+  const returnCommitList = () => {
+    setIsShowDiff(false);
+    onDetail(false);
+  }
 
   return (
     <>
       {isShowDiff ? 
-        <DiffComponent diffText={diffText} /> : 
+        <div>
+          <Button type="primary" onClick={() => returnCommitList()}>Return</Button>
+          <DiffComponent diffText={diffText} />
+        </div>
+        : 
         <List
           itemLayout="horizontal"
           dataSource={commits}
@@ -59,7 +68,7 @@ const CommitList = ({ repoName, commits }) => {
                       {commit.commit.message.split("\n")[0]}
                     </Text>
                     <Space size="small">
-                      <Tooltip title={commit.sha}>
+                      <Tooltip  placement="rightTop" title={commit.sha}>
                         <Tag color="blue" onClick={() => handleCopy(commit.sha)} style={{ cursor: "pointer", userSelect: "none", }}>
                           {commit.sha.substring(0, 7)}
                         </Tag>
