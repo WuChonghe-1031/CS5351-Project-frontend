@@ -1,13 +1,17 @@
 import React from 'react';
-import { useState, useEffect } from "react";
-import { Button, Table } from 'antd';
-import { getRepoCommits } from '../../api/api';
+import { useState } from "react";
+import { Button, Dropdown, Space, Table, message } from 'antd';
+import { CaretDownOutlined } from "@ant-design/icons";
+import { getRepoCommits, getRepoBranches } from '../../api/api';
 import CommitList from './commitList';
 
 const CodeReview = () => {
   const [isShowCommit, setIsShowCommit] = useState(false);
+  const [isShowDetail, setIsShowDetail] = useState(false);
   const [commits, setCommits] = useState([]);
   const [currentRepo, setCurrentRepo] = useState(null);
+  const [currentBranches, setCurrentBranches] = useState(null);
+  const [currentBranchName, setCurrentBranchName] = useState('');
 
   const repoColumns = [
     {
@@ -28,14 +32,51 @@ const CodeReview = () => {
     }
   ];
 
+  const handleBranchClick = async e => {
+    try {
+      const newCommits = await getRepoCommits(currentRepo, e.key);
+      if (newCommits && newCommits.length > 0) {
+        setCommits(newCommits);
+      } 
+      setCurrentBranchName(e.key);
+    } catch (error) {
+      message.error(error);
+    }
+  };
+  const branchMenuProps = {
+    items: currentBranches,
+    onClick: handleBranchClick,
+  };
+
   const checkRepoCommits = async (repoName) => {
-    const commits = await getRepoCommits(repoName);
-    if (commits && commits.length > 0) {
-      setCommits(commits);
-      setCurrentRepo(repoName);
-      setIsShowCommit(true);
-    } else {
-      setIsShowCommit(false);
+    try {
+      const branches = await getRepoBranches(repoName);
+      if (branches && branches.length > 0) {
+        const branchProps = branches.map((branch) => ({
+          key: branch.name,
+          label: branch.name
+        }));
+        setCurrentBranches(branchProps);
+        setCurrentRepo(repoName);
+        let name = '';
+        for (const branch of branches) {
+          if (branch.name === 'main' || branch.name === 'master') {
+            name = branch.name;
+            break;
+          }
+        }
+        name = name || branches[0].name;
+        setCurrentBranchName(name);
+        const commits = await getRepoCommits(repoName, name);
+        if (commits && commits.length > 0) {
+          setCommits(commits);
+          setIsShowCommit(true);
+        } else {
+          setIsShowCommit(false);
+        }
+      }
+    } catch (error) {
+      message.error(error);
     }
   };
 
@@ -47,7 +88,22 @@ const CodeReview = () => {
             <Button type="primary">Add Repo</Button>
             <Table columns={repoColumns} dataSource={repoData} />
           </div>
-        : <CommitList repoName={currentRepo} commits={commits} />
+        : 
+        <div>
+          {
+            !isShowDetail ?
+            <>
+              <Dropdown menu={branchMenuProps}>
+                <Button>
+                  <Space>{currentBranchName}<CaretDownOutlined /></Space>
+                </Button>
+              </Dropdown>
+              <Button type="primary" onClick={() => setIsShowCommit(false)}>Return</Button>
+            </>
+            : null
+          }
+          <CommitList repoName={currentRepo} commits={commits} onDetail={setIsShowDetail} />
+        </div>
       }
     </>
     
