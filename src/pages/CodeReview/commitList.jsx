@@ -3,6 +3,7 @@ import { Avatar, Button, List, Space, Tag, Tooltip, Typography, message} from "a
 import { BranchesOutlined, ClockCircleOutlined, UserOutlined } from "@ant-design/icons";
 import { getCommitDetails } from '../../api/api';
 import DiffComponent from './diffComponent';
+import './index.css';
 
 const { Text } = Typography;
 
@@ -34,7 +35,7 @@ const CommitList = ({ repoName, commits, onDetail }) => {
     <>
       {isShowDiff ? 
         <div>
-          <Button type="primary" onClick={() => returnCommitList()}>Return</Button>
+          <Button type="primary" className="return-commit-btn" onClick={() => returnCommitList()}>Return</Button>
           <DiffComponent diffText={diffText} />
         </div>
         : 
