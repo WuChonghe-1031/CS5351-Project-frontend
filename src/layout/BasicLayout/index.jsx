@@ -14,7 +14,7 @@ const Header = ({ onToggleSidebar }) => {
       >
         菜单
       </button>
-      <div className="user-info">用户：张三</div>
+      <div className="user-info">User：Cityu</div>
     </header>
   );
 };

@@ -4,6 +4,7 @@ import Home from '../pages/Home';
 import Dashboard from '../pages/Dashboard';
 import NotFound from '../pages/NotFound';
 import Login from '../pages/Login';
+import Task from '../pages/Task';
 
 // 2. 定义路由数组（包含：路径、组件、菜单名称等信息）
 export const routes = [
@@ -22,6 +23,11 @@ export const routes = [
     path: '/login',
     name: '登录页',
     element: <Login />,
+  },
+  {
+    path: '/task',
+    name: '任务页',
+    element: <Task />,
   },
 ];
 
