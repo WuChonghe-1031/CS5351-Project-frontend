@@ -10,6 +10,11 @@ const getRepoCommits = async (repoName, name) => {
     return res;
 };
 
+const getRepoComments = async (repoName) => {
+    const res = await githubService.get(`/repos/${repoName}/comments`);
+    return res;
+};
+
 const getCommitDetails = async (repoName, sha) => {
     const res = await githubService.get(`/repos/${repoName}/commits/${sha}`, {
         headers: {
@@ -19,4 +24,4 @@ const getCommitDetails = async (repoName, sha) => {
     return res;
 }
 
-export { getRepoCommits, getCommitDetails, getRepoBranches };
+export { getRepoCommits, getCommitDetails, getRepoBranches, getRepoComments };
