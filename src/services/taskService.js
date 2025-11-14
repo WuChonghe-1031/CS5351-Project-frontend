@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from "./api";
 
 // 后端API基础地址（可通过环境变量配置）
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
@@ -9,7 +9,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080
  * @returns {Promise}
  */
 export const getProjectTasks = (projectId) => {
-  return axios.get(`${API_BASE_URL}/api/projects/${projectId}/tasks`);
+  return api.get(`/api/projects/${projectId}/tasks`);
 };
 
 /**
@@ -17,7 +17,7 @@ export const getProjectTasks = (projectId) => {
  * @returns {Promise}
  */
 export const getAssignedTasks = () => {
-  return axios.get(`${API_BASE_URL}/api/tasks/assigned-to-me`);
+  return api.get(`/api/tasks/assigned-to-me`);
 };
 
 /**
@@ -28,7 +28,7 @@ export const getAssignedTasks = () => {
  * @returns {Promise}
  */
 export const updateTask = (projectId, taskId, data) => {
-  return axios.patch(`${API_BASE_URL}/api/projects/${projectId}/tasks/${taskId}`, data);
+  return api.patch(`/api/projects/${projectId}/tasks/${taskId}`, data);
 };
 
 /**
@@ -38,7 +38,7 @@ export const updateTask = (projectId, taskId, data) => {
  * @returns {Promise}
  */
 export const createTask = (projectId, data) => {
-  return axios.post(`${API_BASE_URL}/api/projects/${projectId}/tasks`, data);
+  return api.post(`/api/projects/${projectId}/tasks`, data);
 };
 
 /**
@@ -49,5 +49,5 @@ export const createTask = (projectId, data) => {
  * @returns {Promise}
  */
 export const replaceTask = (projectId, taskId, data) => {
-  return axios.put(`${API_BASE_URL}/api/projects/${projectId}/tasks/${taskId}`, data);
+  return api.put(`/api/projects/${projectId}/tasks/${taskId}`, data);
 };

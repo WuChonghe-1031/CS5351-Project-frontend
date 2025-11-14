@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authService';
+import '../styles/Login.css'; // 引入样式文件
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -33,7 +34,7 @@ const Login = () => {
 
     try {
       setLoading(true);
-      await loginUser(formData); // 调用登录 API 并存储 Token
+      await loginUser(formData);
       navigate('/projects');
     } catch (err) {
       setError(err.message);
@@ -58,11 +59,13 @@ const Login = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="请输入邮箱"
+              placeholder="请输入邮箱地址"
               disabled={loading}
               autoComplete="email"
               required
+              className={error && !formData.email ? 'error' : ''}
             />
+            <div className="form-helper">请输入有效的邮箱地址</div>
           </div>
 
           <div className="form-group">
@@ -77,7 +80,9 @@ const Login = () => {
               disabled={loading}
               autoComplete="current-password"
               required
+              className={error && !formData.password ? 'error' : ''}
             />
+            <div className="form-helper">密码长度至少6位</div>
           </div>
 
           <button 
@@ -85,7 +90,14 @@ const Login = () => {
             className="submit-btn"
             disabled={loading}
           >
-            {loading ? '登录中...' : '登录'}
+            {loading ? (
+              <>
+                <span className="loading-spinner"></span>
+                登录中...
+              </>
+            ) : (
+              '登录'
+            )}
           </button>
         </form>
 

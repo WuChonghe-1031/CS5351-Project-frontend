@@ -8,8 +8,10 @@ import api from './api';
 export const loginUser = async (credentials) => {
   try {
     const response = await api.post('/api/auth/login', credentials);
+    // const response = { data: { data: { token: "test-token" } } }; // Mock response for testing
     // 从后端响应的 data 中提取 Token（需与后端实际字段匹配）
-    const token = response.data?.data?.token; 
+    const token = response.data?.data?.token;
+    // const token = "test-token"; 
     if (!token) {
       throw new Error('登录失败：未获取到授权令牌');
     }
