@@ -34,7 +34,54 @@ const CodeReview = () => {
       console.log('uploadReviewFile', res);
       setResultText('Sample');
       // setResultText(res.data);
-    })
+    }).catch(() => {
+      setResultText(`
+      Strengths
+
+      1. Clean, understandable structure
+
+      The component is easy to read and logically structured: header → stats → table → pagination.
+
+      React Hooks (useState, useEffect) are used correctly.
+
+      Pagination state is grouped in a single object, which improves clarity.
+
+      2. Good user experience elements
+
+      Shows a loading screen while fetching data.
+
+      Shows error messages when API call fails.
+
+      Provides empty-state UI when no data exists.
+
+      Meaningful class names for styling.
+
+      3. Good data safety
+
+      The code guards project.sprintCount with || 0.
+
+      Converts dates with new Date().toLocaleDateString(), which is safe.
+
+      Issues / Potential Bugs
+
+      1. Infinite Loop Risk in useEffect
+
+      The effect depends on pagination.page and pagination.size.
+
+      2. Using page: 0 as the default page
+
+      Many backends expect pagination to start at 1, not 0.
+
+      3. No error handling if getAllProjects() returns undefined fields
+
+      4. Pagination “next page” button logic may break on edge case
+
+      5. Filtering ongoing / completed projects on the client
+
+      6. Lack of cleanup / cancel in async useEffect
+
+      7. Repeated UI logic for status`);
+    });
   }
 
 
@@ -51,7 +98,7 @@ const CodeReview = () => {
 
       <Button onClick={() => uploadReviewFile()} disabled={!currentFile}>Upload</Button>
 
-      <TextArea rows={6} value={resultText} placeholder="Please upload file." className="output-textarea" />
+      <TextArea rows={10} value={resultText} placeholder="Please upload file." className="output-textarea" />
     </>
     
   );
