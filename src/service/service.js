@@ -1,14 +1,15 @@
 import axios from 'axios';
 
 const service = axios.create({
-  baseURL: '',  // 你的API地址
+  baseURL: 'http://localhost:8080',
+  // baseURL: 'http://114.132.122.217:8080',
   timeout: 10000,  // 请求超时时间
 });
 
 // 请求拦截器
 service.interceptors.request.use(
   config => {
-    // config.headers['Authorization'] = '你的token';
+    config.headers['Access-Control-Allow-Origin'] = '*';
     return config;
   },
   error => {

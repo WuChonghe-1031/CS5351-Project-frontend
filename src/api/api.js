@@ -1,4 +1,10 @@
 import githubService from '../service/githubService';
+import service from '../service/service';
+
+const fileReview = async (file) => {
+    const res = await service.post('/api/files/codereview', file);
+    return res;
+}
 
 const getRepoBranches = async (repoName) => {
     const res = await githubService.get(`/repos/${repoName}/branches`);
@@ -24,4 +30,5 @@ const getCommitDetails = async (repoName, sha) => {
     return res;
 }
 
-export { getRepoCommits, getCommitDetails, getRepoBranches, getRepoComments };
+export { fileReview,
+    getRepoCommits, getCommitDetails, getRepoBranches, getRepoComments };

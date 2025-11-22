@@ -5,6 +5,7 @@ import Dashboard from '../pages/Dashboard';
 import NotFound from '../pages/NotFound';
 import Login from '../pages/Login';
 import CodeReview from '../pages/CodeReview';
+import CodeAnalysis from '../pages/CodeAnalysis';
 
 // 2. 定义路由数组（包含：路径、组件、菜单名称等信息）
 export const routes = [
@@ -28,6 +29,11 @@ export const routes = [
     path: '/codeReview',
     name: '代码审查',
     element: <CodeReview />,
+  },
+  {
+    path: '/codeAnalysis',
+    name: '代码审查',
+    element: <CodeAnalysis />,
   },
 ];
 
