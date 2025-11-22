@@ -2,7 +2,7 @@ import githubService from '../service/githubService';
 import service from '../service/service';
 
 const fileReview = async (file) => {
-    const res = await service.post('/api/files/codereview', file);
+    const res = await service.post('/upload-and-process', file);
     return res;
 }
 

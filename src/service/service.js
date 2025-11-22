@@ -1,9 +1,11 @@
 import axios from 'axios';
 
 const service = axios.create({
-  baseURL: 'http://localhost:8080',
+  // baseURL: 'http://localhost:8080',
   // baseURL: 'http://114.132.122.217:8080',
-  timeout: 10000,  // 请求超时时间
+  // baseURL: 'http://localhost:10010',
+  baseURL: 'http://114.132.122.217:10010',
+  timeout: 100000,  // 请求超时时间
 });
 
 // 请求拦截器
@@ -21,7 +23,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data;
-    if (res.code !== 200) {
+    if (response.status !== 200) {
       return Promise.reject(new Error(res.message || 'Error'));
     } else {
       return res;
