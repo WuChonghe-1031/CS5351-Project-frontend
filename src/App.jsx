@@ -10,7 +10,8 @@ import ProjectTasks from './pages/ProjectTasks';
 import TaskForm from './pages/TaskForm';
 import TaskDetail from './pages/TaskDetail';
 import MyTasks from './pages/MyTasks';
-
+import CodeAnalysisPage from './pages/CodeAnalysis';
+import CodeReviewPage from './pages/CodeReview';
 import './App.css';
 
 // 私有路由组件：未登录用户自动跳转登录页
@@ -65,7 +66,8 @@ function App() {
         <Route path="/projects/:projectId/tasks/:taskId" element={<PrivateRoute><TaskDetail /></PrivateRoute>} />
         <Route path="/projects/:projectId/tasks/:taskId/edit" element={<PrivateRoute><TaskForm /></PrivateRoute>} />
         <Route path="/tasks/assigned-to-me" element={<PrivateRoute><MyTasks /></PrivateRoute>} />
-        
+        <Route path="/codeAnalysis" element={<CodeAnalysisPage />} />
+        <Route path="/codeReview" element={<CodeReviewPage />} />
 
         {/* 根路径重定向 */}
         <Route path="/" element={<Navigate to="/login" />} />

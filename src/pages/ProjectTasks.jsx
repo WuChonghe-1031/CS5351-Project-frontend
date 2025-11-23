@@ -1,88 +1,109 @@
+// src/pages/ProjectTasks.jsx
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getProjectTasks } from '../services/taskService';
 
 const ProjectTasks = () => {
   const { projectId } = useParams();
   const [tasks, setTasks] = useState([]);
+  const [totalTasks, setTotalTasks] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  
+  // 分页状态（默认第一页，10条/页）
+  const [pageable, setPageable] = useState({
+    page: 0,
+    size: 10,
+    sort: ['id,desc']
+  });
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        setLoading(true);
-        const data = await getProjectTasks(projectId);
-        setTasks(data);
-      } catch (err) {
-        setError('加载任务失败：' + err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (!localStorage.getItem('token')) {
-      navigate('/login');
-      return;
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
+      // 传递 projectId 和 pageable 参数
+      const result = await getProjectTasks(projectId, pageable);
+      setTasks(result.tasks); // 从返回结果中提取任务列表
+      setTotalTasks(result.total); // 保存总任务数
+      setError('');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
+  };
 
+  // 组件挂载或分页参数变化时重新获取数据
+  useEffect(() => {
     fetchTasks();
-  }, [projectId, navigate]);
+  }, [projectId, pageable]);
 
-  if (loading) {
-    return <div style={{ textAlign: 'center', margin: '50px' }}>加载任务列表中...</div>;
-  }
+  // 分页控制：上一页/下一页
+  const handlePageChange = (newPage) => {
+    setPageable(prev => ({ ...prev, page: newPage }));
+  };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <Link to={`/projects/${projectId}`} style={{ display: 'inline-block', marginBottom: '20px', color: '#2563eb' }}>
-        ← 返回项目详情
-      </Link>
+    <div className="project-tasks-page">
+      <Link to={`/projects/${projectId}`} className="btn secondary">Return to project details</Link>
+      <h1>Total（ {totalTasks} tasks）</h1>
+      <Link to={`/projects/${projectId}/tasks/create`} className="btn primary">New</Link>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h1>项目任务列表</h1>
-        <Link to={`/projects/${projectId}/tasks/create`}>
-          <button style={{ padding: '8px 16px', backgroundColor: '#2563eb', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-            创建任务
-          </button>
-        </Link>
-      </div>
-
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      {tasks.length === 0 ? (
-        <div style={{ padding: '20px', textAlign: 'center', border: '1px dashed #eee', borderRadius: '8px', margin: '10px 0' }}>
-          <p>暂无任务，点击"创建任务"开始</p>
+      {loading ? (
+        <div className="loading">loading...</div>
+      ) : error ? (
+        <div className="error">{error}</div>
+      ) : tasks.length === 0 ? (
+        <div className="empty-state">
+          <p>No tasks</p>
         </div>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #eee', marginTop: '10px' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f8f9fa' }}>
-              <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #eee' }}>任务标题</th>
-              <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #eee' }}>状态</th>
-              <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #eee' }}>负责人</th>
-              <th style={{ padding: '12px', textAlign: 'left', borderBottom: '1px solid #eee' }}>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tasks.map((task) => (
-              <tr key={task.id}>
-                <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>{task.title}</td>
-                <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
-                  {task.status === 'TODO' ? '待办' : task.status === 'IN_PROGRESS' ? '进行中' : '已完成'}
-                </td>
-                <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
-                  {task.assignee ? `${task.assignee.firstName} ${task.assignee.lastName}`.trim() : '未分配'}
-                </td>
-                <td style={{ padding: '12px', borderBottom: '1px solid #eee' }}>
-                  <Link to={`/projects/${projectId}/tasks/${task.id}`} style={{ marginRight: '10px', color: '#2563eb' }}>详情</Link>
-                  <Link to={`/projects/${projectId}/tasks/${task.id}/edit`} style={{ marginRight: '10px', color: '#666' }}>编辑</Link>
-                </td>
+        <>
+          <table className="tasks-table">
+            {/* 表格内容不变，与之前相同 */}
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Person in charge</th>
+                <th>Operation</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tasks.map(task => (
+                <tr key={task.id}>
+                  <td>{task.id}</td>
+                  <td>{task.title}</td>
+                  <td>{task.status}</td>
+                  <td>{task.assignee?.firstName || '未分配'}</td>
+                  <td>
+                    <Link to={`/projects/${projectId}/tasks/${task.id}`} className="btn">Details</Link>
+                    <Link to={`/projects/${projectId}/tasks/${task.id}/edit`} className="btn secondary">Edit</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* 分页控件 */}
+          <div className="pagination">
+            <button
+              onClick={() => handlePageChange(pageable.page - 1)}
+              disabled={pageable.page === 0}
+            >
+              PgUp
+            </button>
+            <span>
+              {pageable.page + 1} 
+            </span>
+            <button
+              onClick={() => handlePageChange(pageable.page + 1)}
+              disabled={(pageable.page + 1) * pageable.size >= totalTasks}
+            >
+              PgDn
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

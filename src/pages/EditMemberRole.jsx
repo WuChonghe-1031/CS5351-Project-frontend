@@ -20,13 +20,13 @@ const EditMemberRole = () => {
         // 从成员列表中找到目标用户
         const targetMember = membersRes.members.find(m => m.user.id === Number(userId));
         if (!targetMember) {
-          setError('未找到该成员');
+          setError('Cannot find');
           return;
         }
         setMember(targetMember);
         setRole(targetMember.role);
       } catch (err) {
-        setError('加载成员信息失败：' + err.message);
+        setError('fail to load' + err.message);
       } finally {
         setLoading(false);
       }
@@ -40,7 +40,7 @@ const EditMemberRole = () => {
     setSuccess('');
 
     if (member?.role === role) {
-      setError('请选择不同的角色');
+      setError('please choose different member');
       return;
     }
 
@@ -48,7 +48,7 @@ const EditMemberRole = () => {
       setLoading(true);
       // 调用更新角色 API，传递用户ID
       await updateMemberRole(projectId, Number(userId), role);
-      setSuccess('角色更新成功！');
+      setSuccess('update successfully!');
       setTimeout(() => {
         navigate(`/projects/${projectId}`);
       }, 2000);
@@ -63,7 +63,7 @@ const EditMemberRole = () => {
     return (
       <div className="loading-screen">
         <div className="spinner"></div>
-        <p>加载成员信息中...</p>
+        <p>loading member informations...</p>
       </div>
     );
   }
@@ -71,9 +71,9 @@ const EditMemberRole = () => {
   if (error || !member) {
     return (
       <div className="error-page">
-        <h2>成员信息加载失败</h2>
-        <p>{error || '未找到该成员'}</p>
-        <Link to={`/projects/${projectId}`} className="btn secondary">返回项目详情</Link>
+        <h2>fail to load member information</h2>
+        <p>{error || 'cannot find'}</p>
+        <Link to={`/projects/${projectId}`} className="btn secondary">Back</Link>
       </div>
     );
   }
@@ -81,35 +81,35 @@ const EditMemberRole = () => {
   return (
     <div className="edit-role-page">
       <Link to={`/projects/${projectId}`} className="btn secondary">
-        ← 返回项目详情
+        ← Back
       </Link>
 
       <div className="form-card">
-        <h1>编辑成员角色（UserID: {userId}）</h1>
+        <h1>Edit user character（UserID: {userId}）</h1>
         
         {error && <div className="error-message">{error}</div>}
         {success && <div className="success-message">{success}</div>}
         
         <form onSubmit={handleSubmit} className="role-form">
           <div className="form-group">
-            <label>成员信息</label>
+            <label>member info</label>
             <div className="member-info">
-              <p>用户ID：{member.user.id}</p>
-              <p>用户名：{`${member.user.firstName} ${member.user.lastName}`}</p>
-              <p>邮箱：{member.user.email}</p>
-              <p>当前角色：{member.role === 'ADMIN' ? '管理员' : '普通成员'}</p>
+              <p>ID：{member.user.id}</p>
+              <p>Name：{`${member.user.firstName} ${member.user.lastName}`}</p>
+              <p>email：{member.user.email}</p>
+              <p>character：{member.role === 'ADMIN' ? 'ADMIN' : 'MEMBER'}</p>
             </div>
           </div>
           
           <div className="form-group">
-            <label>新角色 <span className="required">*</span></label>
+            <label>New <span className="required">*</span></label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
               disabled={loading || success}
             >
-              <option value="MEMBER">普通成员</option>
-              <option value="ADMIN">管理员</option>
+              <option value="MEMBER">MEMBER</option>
+              <option value="ADMIN">ADMIN</option>
             </select>
           </div>
           
@@ -119,14 +119,14 @@ const EditMemberRole = () => {
               className="btn secondary"
               disabled={loading}
             >
-              取消
+              Cancel
             </Link>
             <button
               type="submit"
               className="btn primary"
               disabled={loading || success}
             >
-              {loading ? '更新中...' : '更新角色'}
+              {loading ? 'updating...' : 'update'}
             </button>
           </div>
         </form>

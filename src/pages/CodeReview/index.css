@@ -1,0 +1,25 @@
+.page-code-table {
+  margin-top: 20px;
+  width: 1660px;
+}
+.add-repo-input {
+  margin-top: 20px;
+  width: 1660px;
+}
+.add-repo-input-row {
+  margin-top: 8px;
+  width: 1660px;
+}
+
+.commit-detail-bar {
+  margin-bottom: 16px;
+  width: 1660px;
+}
+.return-repo-btn {
+  margin-left: 20px;
+  width: 1660px;
+}
+.return-commit-btn {
+  margin-bottom: 16px;
+  width: 1660px;
+}

@@ -26,7 +26,7 @@ const ProjectForm = () => {
             description: data.description || ''
           });
         } catch (err) {
-          setError('加载项目数据失败：' + err.message);
+          setError('Fail to load' + err.message);
         }
       };
       loadProject();
@@ -39,11 +39,11 @@ const ProjectForm = () => {
 
     // 表单验证
     if (!form.name.trim()) {
-      setError('项目名称不能为空');
+      setError('Name cannot be empty');
       return;
     }
     if (!form.projectCode.trim()) {
-      setError('项目编码不能为空');
+      setError('No. cannot be empty');
       return;
     }
 
@@ -58,7 +58,7 @@ const ProjectForm = () => {
         navigate('/projects', { state: { refresh: true } });
       }
     } catch (err) {
-      setError(err.response?.data?.message || '操作失败，请重试');
+      setError(err.response?.data?.message || 'FAIL RETRY!');
     } finally {
       setLoading(false);
     }
@@ -67,43 +67,43 @@ const ProjectForm = () => {
   return (
     <div className="project-form-page">
       <Link to={isEdit ? `/projects/${projectId}` : '/projects'} className="btn secondary">
-        ← 返回
+        ← Back
       </Link>
 
       <div className="form-card">
-        <h1>{isEdit ? '编辑项目' : '创建新项目'}</h1>
+        <h1>{isEdit ? 'Edit project' : 'New project'}</h1>
         
         {error && <div className="error-message">{error}</div>}
         
         <form onSubmit={handleSubmit} className="project-form">
           <div className="form-group">
-            <label>项目名称 <span className="required">*</span></label>
+            <label>Name <span className="required">*</span></label>
             <input
               type="text"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              placeholder="请输入项目名称"
+              placeholder="Please enter the project name"
               disabled={loading}
             />
           </div>
           
           <div className="form-group">
-            <label>项目编码 <span className="required">*</span></label>
+            <label>No. <span className="required">*</span></label>
             <input
               type="text"
               value={form.projectCode}
               onChange={(e) => setForm({ ...form, projectCode: e.target.value })}
-              placeholder="请输入项目编码（如 PROJ001）"
+              placeholder="Please enter the project No."
               disabled={loading || isEdit} // 编辑时不可修改编码
             />
           </div>
           
           <div className="form-group">
-            <label>项目描述</label>
+            <label>Description</label>
             <textarea
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
-              placeholder="请输入项目描述（可选）"
+              placeholder="Please enter the project description"
               rows={4}
               disabled={loading}
             ></textarea>
@@ -116,14 +116,14 @@ const ProjectForm = () => {
               onClick={() => navigate(isEdit ? `/projects/${projectId}` : '/projects')}
               disabled={loading}
             >
-              取消
+              Cancel
             </button>
             <button
               type="submit"
               className="btn primary"
               disabled={loading}
             >
-              {loading ? (isEdit ? '保存中...' : '创建中...') : (isEdit ? '保存' : '创建')}
+              {loading ? (isEdit ? 'saving...' : 'creating...') : (isEdit ? 'save' : 'create')}
             </button>
           </div>
         </form>

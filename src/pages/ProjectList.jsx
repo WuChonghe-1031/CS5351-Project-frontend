@@ -31,7 +31,7 @@ const ProjectList = () => {
       }));
       setError('');
     } catch (err) {
-      setError('加载项目失败：' + (err.response?.data?.message || err.message));
+      setError('fail to load project list' + (err.response?.data?.message || err.message));
       setProjects([]);
     } finally {
       setLoading(false);
@@ -61,7 +61,7 @@ const ProjectList = () => {
     return (
       <div className="loading-screen">
         <div className="spinner"></div>
-        <p>加载项目列表中...</p>
+        <p>Loading project list...</p>
       </div>
     );
   }
@@ -69,13 +69,13 @@ const ProjectList = () => {
   return (
     <div className="project-list-page">
       <header className="page-header">
-        <h1>项目列表</h1>
+        <h1>Project List</h1>
         <div className="header-actions">
           <Link to="/projects/create" className="btn primary">
-            创建新项目
+            Create new project
           </Link>
           <button onClick={handleLogout} className="btn danger">
-            退出登录
+            Log out
           </button>
         </div>
       </header>
@@ -85,10 +85,10 @@ const ProjectList = () => {
       {projects.length === 0 ? (
         <div className="empty-state">
           <div className="empty-icon">📋</div>
-          <h2>暂无项目</h2>
-          <p>您当前没有任何项目，点击下方按钮创建第一个项目吧</p>
+          <h2>No project</h2>
+          <p>No project create a new project</p>
           <Link to="/projects/create" className="btn primary">
-            创建新项目
+            New
           </Link>
         </div>
       ) : (
@@ -96,10 +96,10 @@ const ProjectList = () => {
           <table className="project-table">
             <thead>
               <tr>
-                <th>项目名称</th>
-                <th>项目编码</th>
-                <th>创建时间</th>
-                <th>操作</th>
+                <th>Project Name</th>
+                <th>Project No.</th>
+                <th>Time</th>
+                <th>Operation</th>
               </tr>
             </thead>
             <tbody>
@@ -116,10 +116,10 @@ const ProjectList = () => {
                   </td>
                   <td className="action-buttons">
                     <Link to={`/projects/${project.id}`} className="btn">
-                      查看
+                      Details
                     </Link>
                     <Link to={`/projects/${project.id}/edit`} className="btn secondary">
-                      编辑
+                      Edit
                     </Link>
                   </td>
                 </tr>
@@ -133,16 +133,16 @@ const ProjectList = () => {
               onClick={() => handlePageChange(pagination.page - 1)}
               disabled={pagination.page === 0}
             >
-              上一页
+              Pgup
             </button>
             <span>
-              第 {pagination.page + 1} 页 / 共 {Math.ceil(pagination.total / pagination.size)} 页
+              page {pagination.page + 1}  /  {Math.ceil(pagination.total / pagination.size)} 
             </span>
             <button
               onClick={() => handlePageChange(pagination.page + 1)}
               disabled={(pagination.page + 1) * pagination.size >= pagination.total}
             >
-              下一页
+              Pgdn
             </button>
           </div>
         </div>

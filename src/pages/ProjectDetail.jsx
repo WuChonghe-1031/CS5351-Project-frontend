@@ -38,7 +38,7 @@ const ProjectDetail = () => {
         // 再加载成员（确保项目存在）
         await loadMembers();
       } catch (err) {
-        setError('项目加载失败: ' + err.message);
+        setError('fail to load project: ' + err.message);
       } finally {
         setLoading(false);
       }
@@ -56,12 +56,12 @@ const ProjectDetail = () => {
 
   // 删除成员
   const handleRemoveMember = async (userId, username) => {
-    if (window.confirm(`确定移除 ${username} 吗？`)) {
+    if (window.confirm(`Are you sure to remove ${username} ？`)) {
       try {
         await removeProjectMember(projectId, userId);
         refreshMembers(); // 删除后立即刷新
       } catch (err) {
-        alert('删除失败: ' + err.message);
+        alert('fail to delete ' + err.message);
       }
     }
   };
@@ -72,7 +72,7 @@ const ProjectDetail = () => {
     return (
       <div className="loading-screen">
         <div className="spinner"></div>
-        <p>加载中...</p>
+        <p>loading....</p>
       </div>
     );
   }
@@ -80,9 +80,9 @@ const ProjectDetail = () => {
   if (error || !project) {
     return (
       <div className="error-page">
-        <h2>项目加载失败</h2>
-        <p>{error || '无法获取项目信息'}</p>
-        <button onClick={() => window.location.reload()} className="btn">重试</button>
+        <h2>fail to load</h2>
+        <p>{error || 'cannot get information'}</p>
+        <button onClick={() => window.location.reload()} className="btn">retry</button>
         <Link to="/projects" className="btn secondary">返回列表</Link>
       </div>
     );
@@ -91,30 +91,38 @@ const ProjectDetail = () => {
   return (
     <div className="project-detail-page">
       <header className="page-header">
-        <Link to="/projects" className="btn secondary">← 返回列表</Link>
+        <Link to="/projects" className="btn secondary">← Back</Link>
         <div className="header-actions">
-          <Link to={`/projects/${projectId}/tasks`} className="btn">查看任务</Link>
-          <Link to={`/projects/${projectId}/edit`} className="btn">编辑项目</Link>
-          <Link to={`/projects/${projectId}/members/add`} className="btn primary">添加成员</Link>
+          <Link to={`/projects/${projectId}/tasks`} className="btn">Task</Link>
+          <Link to={`/projects/${projectId}/edit`} className="btn">Edit</Link>
+          <Link to={`/projects/${projectId}/members/add`} className="btn primary">Add member</Link>
+          {/* --- 在这里添加新的按钮 --- */}
+          <Link to="/codeAnalysis" className="btn secondary">
+            CodeAnalysis
+          </Link>
+          <Link to="/codeReview" className="btn secondary">
+            CodeReview
+          </Link>
+          {/* ------------------------- */}
         </div>
       </header>
       
       <div className="project-info-card">
         <h1>{project.name}</h1>
         <div className="project-meta">
-          <span>项目编码：{project.projectCode}</span>
-          <span>创建时间：{new Date(project.createdAt).toLocaleString()}</span>
-          <span>创建者：{project.creatorName}</span>
+          <span>Project No.{project.projectCode}</span>
+          <span>Time{new Date(project.createdAt).toLocaleString()}</span>
+          <span>Creator{project.creatorName}</span>
         </div>
         <div className="project-description">
-          <h3>项目描述</h3>
+          <h3>Description</h3>
           <p>{project.description || '无描述'}</p>
         </div>
       </div>
 
       {/* 成员列表核心区域 */}
       <div className="project-members-section">
-        <h2>项目成员 ({members.length})</h2>
+        <h2>Member ({members.length})</h2>
         
         {/* 显示原始数据（调试用，上线可删除） */}
         <div style={{ display: 'none' }}>
@@ -123,35 +131,35 @@ const ProjectDetail = () => {
         
         {members.length === 0 ? (
           <div className="empty-state">
-            <p>未找到成员，请添加成员</p>
+            <p>Cannot find a member please add one</p>
             <Link to={`/projects/${projectId}/members/add`} className="btn primary">
-              添加成员
+              Add
             </Link>
           </div>
         ) : (
           <table className="members-table">
             <thead>
               <tr>
-                <th>用户ID</th>
-                <th>用户名</th>
-                <th>角色</th>
-                <th>加入时间</th>
-                <th>操作</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Character</th>
+                <th>Join time</th>
+                <th>Operation</th>
               </tr>
             </thead>
             <tbody>
               {/* 强制循环渲染，即使数据格式略有差异 */}
               {members.map((member, index) => (
                 <tr key={member.user.id || index}> {/* 兼容无userId的情况 */}
-                  <td>{member.user.id || '未知ID'}</td>
-                  <td>{member.user.firstName || '未知用户'}</td>
+                  <td>{member.user.id || 'UnknownID'}</td>
+                  <td>{member.user.firstName || 'Unknown member'}</td>
                   <td>
-                    {member.role === 'ADMIN' ? '管理员' : 
-                     member.role === 'MEMBER' ? '普通成员' : 
-                     member.role || '未设置'}
+                    {member.role === 'ADMIN' ? 'ADMIN' : 
+                     member.role === 'MEMBER' ? 'MEMBER' : 
+                     member.role || 'Unsetting'}
                   </td>
                   <td>
-                    {member.joinedAt ? new Date(member.joinedAt).toLocaleString() : '未知时间'}
+                    {member.joinedAt ? new Date(member.joinedAt).toLocaleString() : 'Unknown time'}
                   </td>
                   <td className="action-buttons">
                     <button
@@ -159,14 +167,14 @@ const ProjectDetail = () => {
                       onClick={() => navigate(`/projects/${projectId}/members/${member.user.id}/edit`)}
                       disabled={!member.user.id}
                     >
-                      编辑角色
+                      Edit role
                     </button>
                     <button
                       className="btn danger"
                       onClick={() => handleRemoveMember(member.user.id, member.user.firstName)}
                       disabled={!member.user.id}
                     >
-                      移除
+                      Remove
                     </button>
                   </td>
                 </tr>

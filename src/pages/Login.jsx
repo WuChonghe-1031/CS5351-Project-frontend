@@ -27,7 +27,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.email || !formData.password) {
-      setError('邮箱和密码不能为空！');
+      setError('email and password cannot be non');
       return;
     }
 
@@ -45,20 +45,20 @@ const Login = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>登录 - 项目管理平台</h2>
+        <h2>LOGIN</h2>
         
         {error && <div className="error-message">{error}</div>}
         
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="email">邮箱</label>
+            <label htmlFor="email">EMAIL</label>
             <input
               type="email"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="请输入邮箱"
+              placeholder="email"
               disabled={loading}
               autoComplete="email"
               required
@@ -66,14 +66,14 @@ const Login = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">密码</label>
+            <label htmlFor="password">PASSWORD</label>
             <input
               type="password"
               id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="请输入密码"
+              placeholder="password"
               disabled={loading}
               autoComplete="current-password"
               required
@@ -85,12 +85,12 @@ const Login = () => {
             className="submit-btn"
             disabled={loading}
           >
-            {loading ? '登录中...' : '登录'}
+            {loading ? 'logining' : 'login'}
           </button>
         </form>
 
         <div className="auth-switch">
-          还没有账号？<Link to="/register">立即注册</Link>
+          no account?<Link to="/register">register</Link>
         </div>
       </div>
     </div>

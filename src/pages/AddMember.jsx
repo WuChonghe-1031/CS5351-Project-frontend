@@ -20,24 +20,24 @@ const AddMember = () => {
 
     // 表单验证
     if (!form.userId.trim()) {
-      setError('请输入成员 UserID');
+      setError('please enter UserID');
       return;
     }
     if (isNaN(Number(form.userId))) {
-      setError('UserID 必须是数字');
+      setError('UserID must be int');
       return;
     }
 
     try {
       setLoading(true);
       await addProjectMember(projectId, Number(form.userId), form.role);
-      setSuccess('成员添加成功！');
+      setSuccess('Success');
       setForm({ userId: '', role: 'MEMBER' });
       setTimeout(() => {
         navigate(`/projects/${projectId}`);
       }, 2000);
     } catch (err) {
-      setError(err.response?.data?.message || '添加成员失败，请重试');
+      setError(err.response?.data?.message || 'Fail retry!');
     } finally {
       setLoading(false);
     }
@@ -46,37 +46,37 @@ const AddMember = () => {
   return (
     <div className="add-member-page">
       <Link to={`/projects/${projectId}`} className="btn secondary">
-        ← 返回项目详情
+        ← Back
       </Link>
 
       <div className="form-card">
-        <h1>添加项目成员（按 UserID）</h1>
+        <h1>Add member（UserID）</h1>
         
         {error && <div className="error-message">{error}</div>}
         {success && <div className="success-message">{success}</div>}
         
         <form onSubmit={handleSubmit} className="member-form">
           <div className="form-group">
-            <label>成员 UserID <span className="required">*</span></label>
+            <label> UserID <span className="required">*</span></label>
             <input
               type="number"
               value={form.userId}
               onChange={(e) => setForm({ ...form, userId: e.target.value })}
-              placeholder="请输入要添加的成员 UserID"
+              placeholder=" UserID"
               disabled={loading || success}
             />
-            <p className="form-hint">请确保该 UserID 已注册账号</p>
+            <p className="form-hint"> Ensure the UserID has registered</p>
           </div>
           
           <div className="form-group">
-            <label>成员角色 <span className="required">*</span></label>
+            <label>Character <span className="required">*</span></label>
             <select
               value={form.role}
               onChange={(e) => setForm({ ...form, role: e.target.value })}
               disabled={loading || success}
             >
-              <option value="MEMBER">普通成员</option>
-              <option value="ADMIN">管理员</option>
+              <option value="MEMBER">MEMBER</option>
+              <option value="ADMIN">ADMIN</option>
             </select>
           </div>
           
@@ -86,14 +86,14 @@ const AddMember = () => {
               className="btn secondary"
               disabled={loading}
             >
-              取消
+              Cancel
             </Link>
             <button
               type="submit"
               className="btn primary"
               disabled={loading || success}
             >
-              {loading ? '添加中...' : '添加成员'}
+              {loading ? 'ADDING...' : 'ADD'}
             </button>
           </div>
         </form>

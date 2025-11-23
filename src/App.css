@@ -57,6 +57,7 @@ body {
   align-items: center;
   min-height: 100vh;
   padding: 20px;
+  width: 1660px;
 }
 
 .auth-card {
@@ -183,7 +184,7 @@ body {
 /* 页面头部 */
 .page-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 30px;
   padding-bottom: 15px;
@@ -201,7 +202,18 @@ body {
 
 /* 项目列表页 */
 .project-list-page {
-  padding: 20px 0;
+  padding: 20px 20px;
+  /* 方案1：固定宽度（比如1200px），配合 margin: 0 auto 居中 */
+  width: 1660px; 
+  margin: 0 auto; /* 水平居中，避免贴边 */
+  
+  /* 方案2：最大宽度（推荐），屏幕宽于1400px时固定1400px，窄于时自适应100% */
+  /* max-width: 1400px; */
+  /* margin: 0 auto; */
+  
+  /* 方案3：直接撑满父容器（如果父容器是body，就是全屏宽） */
+  /* width: 100%; */
+  /* padding: 20px 20px; /* 配合左右内边距，避免内容贴屏幕边缘 */
 }
 
 .empty-state {
@@ -295,7 +307,18 @@ body {
 
 /* 项目详情页 */
 .project-detail-page {
-  padding: 20px 0;
+  padding: 20px 20px;
+  /* 方案1：固定宽度（比如1200px），配合 margin: 0 auto 居中 */
+  width: 1660px; 
+  margin: 0 auto; /* 水平居中，避免贴边 */
+  
+  /* 方案2：最大宽度（推荐），屏幕宽于1400px时固定1400px，窄于时自适应100% */
+  /* max-width: 1400px; */
+  /* margin: 0 auto; */
+  
+  /* 方案3：直接撑满父容器（如果父容器是body，就是全屏宽） */
+  /* width: 100%; */
+  /* padding: 20px 20px; /* 配合左右内边距，避免内容贴屏幕边缘 */
 }
 
 .project-info-card {
@@ -433,6 +456,8 @@ body {
 /* 成员管理页面样式 */
 .add-member-page, .edit-role-page {
   padding: 20px 0;
+  width: 1660px;
+  margin: 0 auto;
 }
 
 .member-form, .role-form {

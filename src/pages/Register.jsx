@@ -26,26 +26,26 @@ const Register = () => {
   const validateForm = () => {
     // 1. 检查必填项
     if (!formData.email || !formData.password || !formData.firstName || !formData.lastName) {
-      setError('邮箱、密码、名、姓为必填项！');
+      setError('email password lastname firstname must be filled');
       return false;
     }
 
     // 2. 验证邮箱格式
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setError('请输入有效的邮箱地址（例如：xxx@example.com）');
+      setError('please enter valid email（xxx@example.com）');
       return false;
     }
 
     // 3. 验证密码长度（与后端保持一致，例如至少6位）
     if (formData.password.length < 6) {
-      setError('密码长度不能少于6位！');
+      setError('the length of password cannot be less than six！');
       return false;
     }
 
     // 4. 验证密码一致性
     if (formData.password !== formData.confirmPassword) {
-      setError('两次输入的密码不一致！');
+      setError('difference enter between two password！');
       return false;
     }
 
@@ -66,7 +66,7 @@ const Register = () => {
       await registerUser(registerData);
       
       // 注册成功提示
-      setSuccess('注册成功！即将跳转到登录页...');
+      setSuccess('successfully registered!turn to login page...');
       setError('');
       
       // 2秒后自动跳转登录页
@@ -85,7 +85,7 @@ const Register = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        <h2>用户注册</h2>
+        <h2>Register</h2>
         
         {/* 成功提示 */}
         {success && <div className="success-message">{success}</div>}
@@ -95,14 +95,14 @@ const Register = () => {
         <form onSubmit={handleSubmit} className="auth-form">
           {/* 邮箱输入 */}
           <div className="form-group">
-            <label htmlFor="email">邮箱 <span className="required">*</span></label>
+            <label htmlFor="email">Email <span className="required">*</span></label>
             <input
               type="email"
               id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="请输入邮箱"
+              placeholder="email"
               disabled={loading}
               autoComplete="email" // 优化自动填充
             />
@@ -110,14 +110,14 @@ const Register = () => {
 
           {/* 密码输入 */}
           <div className="form-group">
-            <label htmlFor="password">密码 <span className="required">*</span></label>
+            <label htmlFor="password">Password <span className="required">*</span></label>
             <input
               type="password"
               id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="请输入至少6位密码"
+              placeholder="At least six"
               disabled={loading}
               autoComplete="new-password"
             />
@@ -125,14 +125,14 @@ const Register = () => {
 
           {/* 确认密码 */}
           <div className="form-group">
-            <label htmlFor="confirmPassword">确认密码 <span className="required">*</span></label>
+            <label htmlFor="confirmPassword">comfirm password <span className="required">*</span></label>
             <input
               type="password"
               id="confirmPassword"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              placeholder="请再次输入密码"
+              placeholder="enter your password again"
               disabled={loading}
               autoComplete="new-password"
             />
@@ -140,28 +140,28 @@ const Register = () => {
 
           {/* 名 */}
           <div className="form-group">
-            <label htmlFor="firstName">名 <span className="required">*</span></label>
+            <label htmlFor="firstName">firstName <span className="required">*</span></label>
             <input
               type="text"
               id="firstName"
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              placeholder="请输入您的名"
+              placeholder="firstName"
               disabled={loading}
             />
           </div>
 
           {/* 姓 */}
           <div className="form-group">
-            <label htmlFor="lastName">姓 <span className="required">*</span></label>
+            <label htmlFor="lastName">lastName <span className="required">*</span></label>
             <input
               type="text"
               id="lastName"
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              placeholder="请输入您的姓"
+              placeholder="lastName"
               disabled={loading}
             />
           </div>
@@ -172,13 +172,13 @@ const Register = () => {
             className="submit-btn"
             disabled={loading}
           >
-            {loading ? '注册中...' : '完成注册'}
+            {loading ? 'Registering...' : 'register completed'}
           </button>
         </form>
 
         {/* 登录跳转 */}
         <div className="auth-switch">
-          已有账号？<Link to="/login">立即登录</Link>
+          Have account?<Link to="/login">Loginnow!</Link>
         </div>
       </div>
     </div>

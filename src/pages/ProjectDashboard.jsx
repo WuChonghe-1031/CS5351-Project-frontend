@@ -52,7 +52,7 @@ const ProjectDashboard = () => {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
-        <p>加载项目列表中...</p>
+        <p>Loading Projects...</p>
       </div>
     );
   }
@@ -61,13 +61,13 @@ const ProjectDashboard = () => {
     <div className="project-dashboard">
       {/* 顶部操作栏 */}
       <div className="dashboard-header">
-        <h1>敏捷项目管理</h1>
+        <h1>Agile project management</h1>
         <div className="header-actions">
           <Link to="/projects/create" className="btn primary-btn">
-            创建新项目
+            New
           </Link>
           <button onClick={handleLogout} className="btn danger-btn">
-            退出登录
+            log out
           </button>
         </div>
       </div>
@@ -80,17 +80,17 @@ const ProjectDashboard = () => {
       {/* 项目统计卡片 */}
       <div className="stats-cards">
         <div className="stat-card">
-          <h3>总项目数</h3>
+          <h3>total project</h3>
           <p className="stat-value">{pagination.total}</p>
         </div>
         <div className="stat-card">
-          <h3>进行中项目</h3>
+          <h3>underway</h3>
           <p className="stat-value">
             {projects.filter(p => p.status === 'ACTIVE').length}
           </p>
         </div>
         <div className="stat-card">
-          <h3>已完成项目</h3>
+          <h3>completed</h3>
           <p className="stat-value">
             {projects.filter(p => p.status === 'COMPLETED').length}
           </p>
@@ -99,15 +99,15 @@ const ProjectDashboard = () => {
 
       {/* 项目列表 */}
       <div className="projects-section">
-        <h2>所有项目</h2>
+        <h2>All project</h2>
         
         {projects.length === 0 ? (
           <div className="empty-state">
             <div className="empty-icon">📋</div>
-            <h3>暂无项目数据</h3>
-            <p>点击"创建新项目"开始敏捷开发之旅</p>
+            <h3>no project data</h3>
+            <p>press New button</p>
             <Link to="/projects/create" className="btn primary-btn">
-              创建第一个项目
+              create a new project
             </Link>
           </div>
         ) : (
@@ -116,12 +116,12 @@ const ProjectDashboard = () => {
               <table>
                 <thead>
                   <tr>
-                    <th>项目名称</th>
-                    <th>编码</th>
-                    <th>状态</th>
-                    <th>迭代次数</th>
-                    <th>创建时间</th>
-                    <th>操作</th>
+                    <th>Name</th>
+                    <th>No.</th>
+                    <th>Status</th>
+                    <th>Iteration</th>
+                    <th>Time</th>
+                    <th>Operation</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -146,10 +146,10 @@ const ProjectDashboard = () => {
                       <td>
                         <div className="action-buttons">
                           <Link to={`/projects/${project.id}`} className="btn btn-sm">
-                            详情
+                            Details
                           </Link>
                           <Link to={`/projects/${project.id}/edit`} className="btn btn-sm secondary">
-                            编辑
+                            Edit
                           </Link>
                         </div>
                       </td>
@@ -168,7 +168,7 @@ const ProjectDashboard = () => {
                 上一页
               </button>
               <span>
-                第 {pagination.page + 1} 页 / 共 {Math.ceil(pagination.total / pagination.size)} 页
+                 Page{pagination.page + 1}  /  {Math.ceil(pagination.total / pagination.size)} 
               </span>
               <button
                 onClick={() => handlePageChange(pagination.page + 1)}

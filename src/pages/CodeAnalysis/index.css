@@ -1,0 +1,9 @@
+.dragger-container {
+  width: 1660px;
+  height: 300px;
+  margin-bottom: 40px;
+}
+.output-textarea {
+  margin-top: 20px;
+  width: 1660px;
+}
